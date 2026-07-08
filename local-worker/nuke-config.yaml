@@ -1,0 +1,95 @@
+# =============================================================
+# aws-nuke Configuration File
+# =============================================================
+# IMPORTANT: You MUST customize this file before running!
+#
+# 1. Replace YOUR_ACCOUNT_ID_HERE with your actual AWS Account ID
+#    (e.g., 123456789012)
+# 2. Set an Account Alias in IAM if you haven't already
+#    (aws-nuke requires this as a safety check)
+# 3. Review the "filters" section to protect resources you want
+#    to keep (like this project's own Lambda, SNS, SQS)
+#
+# Docs: https://github.com/rebuy-de/aws-nuke
+# =============================================================
+
+# --- Regions to nuke (Mumbai FIRST, then all others) ---
+regions:
+  - ap-south-1       # Mumbai — PRIMARY
+  - us-east-1
+  - us-east-2
+  - us-west-1
+  - us-west-2
+  - eu-west-1
+  - eu-west-2
+  - eu-west-3
+  - eu-central-1
+  - ap-southeast-1
+  - ap-southeast-2
+  - ap-northeast-1
+  - ap-northeast-2
+  - ap-northeast-3
+  - sa-east-1
+  - ca-central-1
+
+# --- Account configuration ---
+account-blocklist:
+  # NEVER nuke these accounts (safety net)
+  # Add any other account IDs here that should be protected
+  - "999999999999"  # Example placeholder — keep for safety
+
+accounts:
+  # Replace with YOUR actual AWS Account ID
+  "457981236753":
+    # Filters: Resources matching these patterns will NOT be deleted
+    filters:
+      # ─── Protect the Kill Switch infrastructure itself ───
+      IAMRole:
+        - type: "contains"
+          value: "Kill-Switch"
+        - type: "contains"
+          value: "Nuclear-Button"
+      IAMRolePolicy:
+        - type: "contains"
+          value: "Kill-Switch"
+      IAMRolePolicyAttachment:
+        - type: "contains"
+          value: "Kill-Switch"
+      LambdaFunction:
+        - type: "contains"
+          value: "Nuclear-Button"
+        - type: "contains"
+          value: "kill-switch"
+      SNSTopic:
+        - type: "contains"
+          value: "Kill-Switch"
+        - type: "contains"
+          value: "Budget"
+      SNSSubscription:
+        - type: "contains"
+          value: "Kill-Switch"
+      SQSQueue:
+        - type: "contains"
+          value: "kill-switch"
+
+      # ─── Protect default VPC (AWS creates this, don't delete) ───
+      EC2DefaultVPC:
+        - "default"
+
+      # ─── Protect CloudWatch log groups for debugging ───
+      CloudWatchLogsLogGroup:
+        - type: "contains"
+          value: "Nuclear-Button"
+
+      # ─── Protect the Budget itself ───
+      Budget:
+        - type: "contains"
+          value: "Kill-Switch"
+
+# --- Resource types to skip entirely (optional) ---
+# Uncomment to skip specific resource types that are safe or cause issues
+# resource-types:
+#   excludes:
+#     - IAMUser          # Never delete IAM users
+#     - IAMGroup         # Never delete IAM groups
+#     - Route53Zone      # Never delete DNS zones

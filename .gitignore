@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PyInstaller / Compiled binaries
+build/
+dist/
+*.spec
+*.exe
+
+# Logs
+worker.log
+*.log
+
+# Nuke Config (Optional: exclude if you want to keep it local only, but we'll allow it if you use placeholder IDs)
+# nuke-config.yaml
+
+# OS Files
+.DS_Store
+Thumbs.db
