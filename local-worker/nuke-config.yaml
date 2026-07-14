@@ -40,7 +40,7 @@ account-blocklist:
 
 accounts:
   # Replace with YOUR actual AWS Account ID
-  "457981236753":
+  "123456789":
     # Filters: Resources matching these patterns will NOT be deleted
     filters:
       # ─── Protect the Kill Switch infrastructure itself ───
